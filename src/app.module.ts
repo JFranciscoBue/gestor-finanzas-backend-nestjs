@@ -24,6 +24,7 @@ config({ path: '.env' });
       logging: true,
     }),
     JwtModule.registerAsync({
+      global: true,
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'), // Obtener la variable de entorno JWT_SECRET de .env

@@ -1,5 +1,5 @@
 import { Category } from 'src/Category/category.entity';
-import { CategoryEnum } from 'src/enums/Category.enum';
+import { TransactionsEnum } from 'src/enums/Transactions.enum';
 import { User } from 'src/User/user.entity';
 import {
   Column,
@@ -18,8 +18,8 @@ export class Transaction {
   @Column({ type: 'decimal' })
   amount: number;
 
-  @Column({ type: 'enum', enum: CategoryEnum })
-  type: CategoryEnum;
+  @Column({ type: 'enum', enum: TransactionsEnum })
+  type: TransactionsEnum;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
@@ -31,4 +31,7 @@ export class Transaction {
   @ManyToOne(() => Category, (category) => category.transactions)
   @JoinColumn({ name: 'category_id' })
   category: Category;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 }
