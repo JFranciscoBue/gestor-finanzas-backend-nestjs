@@ -76,6 +76,39 @@ export class TransactionService {
     });
   }
 
+  async getSummary(user_id: string): Promise<Object> {
+    const user = await this.UsersRepository.findOne({
+      where: { id: user_id },
+      relations: { transactions: true },
+    });
+
+    if (!user) throw new NotFoundException();
+
+    console.log(user);
+
+    const userTransactions = user.transactions;
+
+    console.log(userTransactions);
+
+    const totalIncome = userTransactions
+      .filter((t) => t.type === 'INCOME')
+      .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const totalExpense = userTransactions
+      .filter((t) => t.type === 'EXPENSE')
+      .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const balance = totalIncome - totalExpense;
+
+    return {
+      totalIncome,
+      totalExpense,
+      balance,
+    };
+  }
+
+  async getSummaryByCategory(user_id: string) {}
+
   async createTransaction(
     transactionData: ITransactionDataDto,
     user_id: string,
